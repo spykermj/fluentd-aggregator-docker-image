@@ -67,27 +67,3 @@ jobs:
           labels: ${{ steps.metadata.outputs.labels }}
           load: true
           push: false
-
-      - name: Generate OCI image Syft SBOM
-        uses: anchore/sbom-action@07978da4bdb4faa726e52dfc6b1bed63d4b56479 # v0.13.3
-        with:
-          image: "${{ github.repository }}:${{ steps.metadata.outputs.version }}"
-          dependency-snapshot: true
-          format: spdx-json
-          artifact-name: ${{ github.event.repository.name }}-${{ matrix.os }}-syft-sbom
-          output-file: ${{ github.event.repository.name }}-${{ matrix.os }}-syft-sbom.spdx.json
-
-      - name: Scan OCI image Syft SBOM with Grype
-        id: scan
-        uses: anchore/scan-action@84aa2c1d0eba986ed2274869c27f1e35a625449f # v3.3.3
-        with:
-          sbom: ${{ github.event.repository.name }}-${{ matrix.os }}-syft-sbom.spdx.json
-          severity-cutoff: medium
-          output-format: sarif
-          fail-build: false
-
-      - name: Upload Grype SARIF report
-        uses: github/codeql-action/upload-sarif@8775e868027fa230df8586bdf502bbd9b618a477 # v2.2.3
-        with:
-          category: grype-${{ matrix.os }}
-          sarif_file: ${{ steps.scan.outputs.sarif }}
