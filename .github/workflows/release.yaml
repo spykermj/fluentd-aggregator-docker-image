@@ -44,7 +44,6 @@ jobs:
             latest=false
           images: |
             ghcr.io/${{ github.repository }}
-            docker.io/${{ secrets.DOCKERHUB_REPO }}
           tags: |
             type=semver,pattern=${{ matrix.os }}-{{version}}
             type=semver,pattern=${{ matrix.os }}-{{major}}.{{minor}}
