@@ -1,4 +1,4 @@
-FROM ruby:3.4.6-alpine
+FROM alpine:3.22.1
 
 ENV FLUENTD_DISABLE_BUNDLER_INJECTION="1"
 
