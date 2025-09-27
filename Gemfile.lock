@@ -135,11 +135,11 @@ GEM
       fluentd (>= 0.10.58, < 2)
       ltsv
       ruby-kafka (>= 1.4.0, < 2)
-    fluent-plugin-opensearch (1.0.9)
+    fluent-plugin-opensearch (1.0.10)
       aws-sdk-core (~> 3)
       excon
       faraday (~> 1.10)
-      faraday_middleware-aws-sigv4
+      faraday_middleware-aws-sigv4 (~> 0.6.1)
       fluentd (>= 0.14.22)
       opensearch-ruby
     fluent-plugin-prometheus (2.0.3)
@@ -250,7 +250,7 @@ DEPENDENCIES
   fluent-plugin-elasticsearch (= 5.2.4)
   fluent-plugin-grafana-loki (= 1.2.18)
   fluent-plugin-kafka (= 0.18.1)
-  fluent-plugin-opensearch (= 1.0.9)
+  fluent-plugin-opensearch (= 1.0.10)
   fluent-plugin-prometheus (= 2.0.3)
   fluent-plugin-record-modifier (= 2.1.1)
   fluent-plugin-rewrite-tag-filter (= 2.4.0)
