@@ -10,7 +10,7 @@ COPY Gemfile Gemfile.lock /fluentd/
 RUN apk update \
   && apk add --no-cache \
   ca-certificates \
-  ruby ruby-irb ruby-etc ruby-webrick \
+  ruby \
   libcurl \
   libxml2 libxslt \
   tini \
