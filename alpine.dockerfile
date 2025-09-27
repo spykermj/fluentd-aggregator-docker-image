@@ -34,7 +34,7 @@ RUN addgroup --system --gid 2000 fluent && adduser --system --ingroup fluent --u
   && mkdir -p /fluentd/etc /fluentd/plugins \
   && chown -R fluent:fluent /fluentd
 
-COPY fluent.yaml /fluentd/etc/
+COPY fluent.conf /fluentd/etc/
 COPY --chmod=755 entrypoint.sh /bin/
 
 ENV FLUENTD_CONF="fluent.conf"
