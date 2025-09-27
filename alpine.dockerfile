@@ -37,7 +37,7 @@ RUN addgroup --system --gid 2000 fluent && adduser --system --ingroup fluent --u
 COPY fluent.yaml /fluentd/etc/
 COPY --chmod=755 entrypoint.sh /bin/
 
-ENV FLUENTD_CONF="fluent.yaml"
+ENV FLUENTD_CONF="fluent.conf"
 
 ENV LD_PRELOAD=""
 EXPOSE 24224
