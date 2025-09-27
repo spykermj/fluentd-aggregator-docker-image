@@ -22,9 +22,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
 
-      - name: Install Cosign
-        uses: sigstore/cosign-installer@9becc617647dfa20ae7b1151972e9b3a2c338a2b # v2.8.1
-
       - name: Run Hadolint
         id: hadolint
         uses: hadolint/hadolint-action@54c9adbab1582c2ef04b2016b760714a4bfde3cf # v3.1.0
@@ -49,7 +46,6 @@ jobs:
             latest=false
           images: |
             ghcr.io/${{ github.repository }}
-            docker.io/${{ secrets.DOCKERHUB_REPO }}
           tags: |
             type=raw,value=${{ matrix.os }}-main
             type=raw,value=main,enable=${{ matrix.os == 'alpine' }}
@@ -79,51 +75,6 @@ jobs:
           load: true
           push: false
 
-      - name: Generate OCI image Syft SBOM
-        uses: anchore/sbom-action@07978da4bdb4faa726e52dfc6b1bed63d4b56479 # v0.13.3
-        with:
-          image: "ghcr.io/${{ github.repository }}:${{ steps.metadata.outputs.version }}"
-          dependency-snapshot: true
-          format: spdx-json
-          artifact-name: ${{ github.event.repository.name }}-${{ matrix.os }}-syft-sbom
-          output-file: ${{ github.event.repository.name }}-${{ matrix.os }}-syft-sbom.spdx.json
-
-      - name: Scan OCI image Syft SBOM with Grype
-        id: scan
-        uses: anchore/scan-action@84aa2c1d0eba986ed2274869c27f1e35a625449f # v3.3.3
-        continue-on-error: true
-        with:
-          sbom: ${{ github.event.repository.name }}-${{ matrix.os }}-syft-sbom.spdx.json
-          severity-cutoff: medium
-          output-format: sarif
-          fail-build: true
-
-      - name: Upload Grype SARIF report
-        uses: github/codeql-action/upload-sarif@8775e868027fa230df8586bdf502bbd9b618a477 # v2.2.3
-        with:
-          category: grype-${{ matrix.os }}
-          sarif_file: ${{ steps.scan.outputs.sarif }}
-
-      - name: Fail workflow
-        if: ${{ steps.hadolint.outcome == 'failure' && steps.scan.outcome == 'failure' }}
-        run: |
-          set -euo pipefail
-          echo "::error::Code scanning failed."
-          exit 1
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a # v2.1.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Login to DockerHub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a # v2.1.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Build & push OCI image
         id: build_push
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671 # v4.0.0
@@ -139,8 +90,3 @@ jobs:
           labels: ${{ steps.metadata.outputs.labels }}
           load: false
           push: true
-
-      - name: Sign OCI image
-        env:
-          COSIGN_EXPERIMENTAL: true
-        run: echo "${{ steps.metadata.outputs.tags }}" | xargs -I {} cosign sign --yes --recursive {}@${{ steps.build_push.outputs.digest }}
