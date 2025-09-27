@@ -101,35 +101,3 @@ jobs:
           labels: ${{ steps.metadata.outputs.labels }}
           load: false
           push: true
-
-  publish:
-    name: Publish Release
-    needs: release
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - name: Checkout
-        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
-
-      - name: Update Docker repository description
-        uses: peter-evans/dockerhub-description@93b93397c27ed52b4055b8c6b2f8d92456ab3c56 # v3.1.2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: ${{ secrets.DOCKERHUB_REPO }}
-
-      - name: Get changelog entry
-        id: changelog_reader
-        uses: mindsers/changelog-reader-action@b97ce03a10d9bdbb07beb491c76a5a01d78cd3ef # v2.2.2
-        with:
-          path: ./CHANGELOG.md
-          version: ${{ github.ref_name }}
-
-      - name: Create release
-        uses: ncipollo/release-action@a2e71bdd4e7dab70ca26a852f29600c98b33153e # v1.12.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          allowUpdates: true
-          body: ${{ steps.changelog_reader.outputs.changes }}
