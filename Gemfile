@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 gem "oj", "3.16.11"
-gem "json", "2.15.0"
+gem "json", "2.15.1"
 gem "async", "1.32.1"
 gem "async-http", "0.64.2"
 gem "fluentd", "1.18.0"
