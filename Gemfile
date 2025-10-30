@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "oj", "3.16.11"
+gem "oj", "3.16.12"
 gem "json", "2.15.1"
 gem "fluentd", "1.19.0"
 gem "fluent-plugin-azure-loganalytics", "0.7.0"
