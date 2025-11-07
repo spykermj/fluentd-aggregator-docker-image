@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gem "oj", "3.16.11"
 gem "json", "2.15.1"
-gem "fluentd", "1.19.0"
+gem "fluentd", "1.19.1"
 gem "fluent-plugin-azure-loganalytics", "0.7.0"
 gem "fluent-plugin-azurestorage-gen2", "0.3.9"
 gem "fluent-plugin-cloudwatch-logs", "0.15.0"
