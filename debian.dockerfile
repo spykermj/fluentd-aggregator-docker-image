@@ -1,4 +1,4 @@
-FROM ruby:3.4.7-slim
+FROM ruby:3.4.8-slim
 
 ENV FLUENTD_DISABLE_BUNDLER_INJECTION="1"
 
