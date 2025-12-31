@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd ${HOME}
+
 #source vars if file exists
 DEFAULT=/etc/default/fluentd
 
