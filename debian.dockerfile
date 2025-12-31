@@ -35,8 +35,9 @@ RUN groupadd --system --gid 2000 fluent && useradd --system --gid fluent --uid 2
   && mkdir -p /fluentd/log \
   && mkdir -p /fluentd/state \
   # configuration/plugins path (default: copied from .)
-  && mkdir -p /fluentd/etc /fluentd/plugins \
-  && chown -R fluent:fluent /fluentd
+  && mkdir -p /fluentd/etc /fluentd/plugins /home/fluent \
+  && chown -R fluent:fluent /fluentd \
+  && chown -R fluent:fluent /home/fluent
 
 COPY fluent.conf /fluentd/etc/
 COPY --chmod=755 entrypoint.sh /bin/
