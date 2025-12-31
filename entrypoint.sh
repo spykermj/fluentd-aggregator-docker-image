@@ -2,6 +2,9 @@
 
 cd ${HOME}
 
+export TMPDIR=/tmp/fluentd
+mkdir -p ${TMPDIR}; chmod 700 ${TMPDIR}
+
 #source vars if file exists
 DEFAULT=/etc/default/fluentd
 
